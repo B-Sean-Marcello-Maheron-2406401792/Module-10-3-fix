@@ -1,0 +1,10 @@
+C:\Users\seanm\module10\rust-yewchat\yewchat-client\target\debug\deps\gloo_console-3e358e530be4b3fc.d: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\lib.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\console_dbg.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\counter.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\externs.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\macros.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\timer.rs
+
+C:\Users\seanm\module10\rust-yewchat\yewchat-client\target\debug\deps\libgloo_console-3e358e530be4b3fc.rmeta: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\lib.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\console_dbg.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\counter.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\externs.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\macros.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\timer.rs
+
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\lib.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\console_dbg.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\counter.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\externs.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\macros.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\gloo-console-0.3.0\src\timer.rs:

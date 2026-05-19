@@ -1,0 +1,10 @@
+C:\Users\seanm\module10\rust-yewchat\yewchat-client\target\debug\deps\implicit_clone-8b6903ae4f777b72.d: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\lib.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\sync.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\array.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\map.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\string.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\unsync.rs
+
+C:\Users\seanm\module10\rust-yewchat\yewchat-client\target\debug\deps\libimplicit_clone-8b6903ae4f777b72.rmeta: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\lib.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\sync.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\array.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\map.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\string.rs C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\unsync.rs
+
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\lib.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\sync.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\array.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\map.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\string.rs:
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\implicit-clone-0.4.9\src\unsync.rs:

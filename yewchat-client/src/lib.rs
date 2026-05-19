@@ -27,8 +27,8 @@ pub struct App {
     connected: bool,
 }
 
-#[derive(PartialEq)]
-enum Screen { Login, Chat }
+#[derive(PartialEq, Clone, Copy)]
+pub enum Screen { Login, Chat, About }
 
 pub enum Msg {
     SetName(String),
@@ -42,10 +42,12 @@ pub enum Msg {
     SetInput(String),
     SendMessage,
     Disconnect,
+    SwitchScreen(Screen),
 }
 
 const AVATARS: &[&str] = &[
     "🦊","🐺","🐧","🦁","🐸","🤖","👾","🦄","🐙","🦋","🐉","👻",
+    "🚀","🛸","🌌","🛰️","🌠","☄️","⚡","🔥","❄️","🍀","💎","🧿",
 ];
 
 impl Component for App {
@@ -71,6 +73,7 @@ impl Component for App {
             Msg::SetName(v)   => { self.name = v; true }
             Msg::SetServer(v) => { self.server_url = v; true }
             Msg::SetAvatar(v) => { self.selected_avatar = v; true }
+            Msg::SwitchScreen(s) => { self.screen = s; true }
 
             Msg::Connect => {
                 if self.name.trim().is_empty() { return false; }
@@ -194,6 +197,7 @@ impl Component for App {
         match self.screen {
             Screen::Login => self.view_login(ctx),
             Screen::Chat  => self.view_chat(ctx),
+            Screen::About => self.view_about(ctx),
         }
     }
 }
@@ -217,6 +221,11 @@ impl App {
                 <div class="login-header">
                     <h1>{ "YEWCHAT" }</h1>
                     <p>{ "// Rust + Yew + WebSocket" }</p>
+                    <div class="header-links">
+                        <button class="link-btn" onclick={link.callback(|_| Msg::SwitchScreen(Screen::About))}>
+                            { "[ SYSTEM INTEL ]" }
+                        </button>
+                    </div>
                 </div>
                 <div class="avatar-picker">
                     <div class="avatar-label">{ "// SELECT AVATAR" }</div>
@@ -231,7 +240,6 @@ impl App {
                             oninput={link.callback(|e: InputEvent| {
                                 Msg::SetName(e.target_unchecked_into::<web_sys::HtmlInputElement>().value())
                             })}
-                            // PERBAIKAN: Menggunakan batch_callback agar tidak menghapus input saat mengetik
                             onkeydown={link.batch_callback(|e: KeyboardEvent| {
                                 if e.key() == "Enter" { Some(Msg::Connect) }
                                 else { None }
@@ -255,6 +263,47 @@ impl App {
                     <button class="btn-connect"
                         onclick={link.callback(|_| Msg::Connect)}>
                         { "// CONNECT" }
+                    </button>
+                </div>
+            </div>
+        }
+    }
+
+    fn view_about(&self, ctx: &Context<Self>) -> Html {
+        let link = ctx.link();
+        html! {
+            <div id="about-screen">
+                <div class="about-container">
+                    <div class="about-header">
+                        <h2>{ "SYSTEM INTEL" }</h2>
+                        <div class="glitch-line"></div>
+                    </div>
+                    <div class="about-content">
+                        <section>
+                            <h3>{ "> PROJECT_OVERVIEW" }</h3>
+                            <p>{ "YewChat is a distributed communication protocol built on the bedrock of Rust. It leverages the Yew framework for high-performance frontend rendering and WebSockets for real-time synchronization." }</p>
+                        </section>
+                        <section>
+                            <h3>{ "> ARCHITECTURE_CORE" }</h3>
+                            <ul class="tech-list">
+                                <li><span>{ "CORE_ENGINE:" }</span>{ " Rust 2021" }</li>
+                                <li><span>{ "UI_FRAMEWORK:" }</span>{ " Yew (WebAssembly)" }</li>
+                                <li><span>{ "PROTOCOL:" }</span>{ " WebSockets (tokio-tungstenite)" }</li>
+                                <li><span>{ "AESTHETIC:" }</span>{ " Cyberpunk / Neon-Monochrome" }</li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h3>{ "> CREATIVITY_PROTOCOL" }</h3>
+                            <p>{ "In a world driven by automation, creativity is the ultimate encryption. This interface is a testament to the fusion of logic and art." }</p>
+                            <div class="creativity-quote">
+                                { "“Creativity is the key to compete with AI in the future workforce.”" }
+                                <br/>
+                                <span class="quote-source">{ "— WORLD ECONOMIC FORUM" }</span>
+                            </div>
+                        </section>
+                    </div>
+                    <button class="btn-back" onclick={link.callback(|_| Msg::SwitchScreen(Screen::Login))}>
+                        { "<< RETURN TO UPLINK" }
                     </button>
                 </div>
             </div>

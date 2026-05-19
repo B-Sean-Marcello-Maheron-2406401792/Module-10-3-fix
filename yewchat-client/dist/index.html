@@ -69,13 +69,41 @@
         .btn-send { padding:9px 18px; background:transparent; border:1px solid var(--neon); color:var(--neon); font-family:'Orbitron',monospace; font-size:0.65rem; font-weight:700; letter-spacing:3px; cursor:pointer; text-shadow:var(--glow); }
         .btn-send:hover { background:rgba(0,255,157,0.1); }
         .btn-send:disabled { opacity:0.25; cursor:not-allowed; }
+
+        /* About Screen Styles */
+        #about-screen { display:flex; align-items:center; justify-content:center; height:100vh; background:radial-gradient(circle at center, #0a1520 0%, #020408 100%); }
+        .about-container { width:min(600px, 90vw); padding:40px; background:rgba(4,10,16,0.8); border:1px solid var(--border); position:relative; overflow:hidden; }
+        .about-container::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation:scan 3s infinite linear; }
+        @keyframes scan { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
+
+        .about-header h2 { font-family:'Orbitron',monospace; font-size:1.8rem; color:var(--neon); text-shadow:var(--glow); margin-bottom:10px; }
+        .glitch-line { height:1px; background:var(--muted); margin-bottom:30px; position:relative; }
+        .glitch-line::after { content:''; position:absolute; top:0; left:0; width:30%; height:1px; background:var(--neon); box-shadow:var(--glow); }
+
+        .about-content section { margin-bottom:24px; }
+        .about-content h3 { font-family:'Share Tech Mono',monospace; font-size:0.9rem; color:var(--neon2); margin-bottom:8px; opacity:0.8; }
+        .about-content p { font-size:0.95rem; color:var(--text); line-height:1.6; opacity:0.9; }
+
+        .tech-list { list-style:none; margin-top:10px; }
+        .tech-list li { font-family:'Share Tech Mono',monospace; font-size:0.85rem; margin-bottom:6px; display:flex; gap:10px; }
+        .tech-list li span { color:var(--muted); min-width:120px; }
+
+        .creativity-quote { margin-top:20px; padding:15px; border-left:2px solid var(--neon3); background:rgba(255,45,120,0.05); font-style:italic; color:var(--neon3); }
+        .quote-source { font-size:0.7rem; font-family:'Share Tech Mono',monospace; opacity:0.7; font-style:normal; margin-top:5px; display:block; }
+
+        .btn-back { margin-top:20px; padding:10px 20px; background:transparent; border:1px solid var(--muted); color:var(--muted); font-family:'Share Tech Mono',monospace; font-size:0.8rem; cursor:pointer; transition:all 0.2s; }
+        .btn-back:hover { border-color:var(--neon); color:var(--neon); box-shadow:var(--glow); }
+
+        .header-links { margin-top:10px; }
+        .link-btn { background:transparent; border:none; color:var(--muted); font-family:'Share Tech Mono',monospace; font-size:0.7rem; cursor:pointer; letter-spacing:1px; }
+        .link-btn:hover { color:var(--neon2); text-decoration:underline; }
     </style>
-<link rel="modulepreload" href="/yewchat-client-7a8f167ef6aba39b.js" crossorigin="anonymous" integrity="sha384-cIYOD81eTr22BrCoGPPhLTQxmC3vM8SFloYMa8HjNpi4XXjIMEjt+x/Hig6Gl179"><link rel="preload" href="/yewchat-client-7a8f167ef6aba39b_bg.wasm" crossorigin="anonymous" integrity="sha384-TACXPjmTpD6XP8dqfotYw5LVU7BwdlB0nhdYSbwplzUgI9y8EVgnLo9XfCnxCmm3" as="fetch" type="application/wasm"></head>
+<link rel="modulepreload" href="/yewchat-client-3ec6dd4aed47da8b.js" crossorigin="anonymous" integrity="sha384-+vSyiqOpyY/qI0qeI6QXOGmZwPFuQABUn04maxvPYZL5BPFQI578hF0akiUlmEEF"><link rel="preload" href="/yewchat-client-3ec6dd4aed47da8b_bg.wasm" crossorigin="anonymous" integrity="sha384-GEgoxb+Y+RIzMo4UXXpjegSfCa+geJSjaNIoxgO2OmwFR1sEanvFKd7uNy37CKKQ" as="fetch" type="application/wasm"></head>
 <body>
 
 <script type="module">
-import init, * as bindings from '/yewchat-client-7a8f167ef6aba39b.js';
-const wasm = await init({ module_or_path: '/yewchat-client-7a8f167ef6aba39b_bg.wasm' });
+import init, * as bindings from '/yewchat-client-3ec6dd4aed47da8b.js';
+const wasm = await init({ module_or_path: '/yewchat-client-3ec6dd4aed47da8b_bg.wasm' });
 
 
 window.wasmBindings = bindings;
