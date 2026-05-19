@@ -1,0 +1,7 @@
+C:\Users\seanm\module10\rust-yewchat\yewchat-server\target\debug\deps\futures_sink-1fb0516a736b3eeb.d: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.32\src\lib.rs
+
+C:\Users\seanm\module10\rust-yewchat\yewchat-server\target\debug\deps\libfutures_sink-1fb0516a736b3eeb.rlib: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.32\src\lib.rs
+
+C:\Users\seanm\module10\rust-yewchat\yewchat-server\target\debug\deps\libfutures_sink-1fb0516a736b3eeb.rmeta: C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.32\src\lib.rs
+
+C:\Users\seanm\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\futures-sink-0.3.32\src\lib.rs:
