@@ -25,10 +25,11 @@ pub struct App {
     messages: Vec<ChatMessage>,
     input: String,
     connected: bool,
+    emoji_picker_open: bool,
 }
 
 #[derive(PartialEq, Clone, Copy)]
-pub enum Screen { Login, Chat, About }
+pub enum Screen { Login, Chat, About, Gallery }
 
 pub enum Msg {
     SetName(String),
@@ -43,11 +44,32 @@ pub enum Msg {
     SendMessage,
     Disconnect,
     SwitchScreen(Screen),
+    ToggleEmojiPicker,
+    AddEmoji(String),
 }
 
 const AVATARS: &[&str] = &[
     "🦊","🐺","🐧","🦁","🐸","🤖","👾","🦄","🐙","🦋","🐉","👻",
     "🚀","🛸","🌌","🛰️","🌠","☄️","⚡","🔥","❄️","🍀","💎","🧿",
+    "🎨","🎭","🎪","🎢","🎡","🎬","🎤","🎧","🎷","🎸","🎹","🎺",
+];
+
+const EMOJIS: &[&str] = &[
+    "😀","😃","😄","😁","😆","😅","😂","🤣","😊","😇","🙂","🙃",
+    "😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜",
+    "🤪","🤨","🧐","🤓","😎","🤩","🥳","😏","😒","😞","😔","😟",
+    "😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤","😠",
+    "😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🤗",
+    "🤔","🤭","🤫","🤥","😶","😐","😑","😬","🙄","😯","😦","😧",
+    "😮","😲","🥱","😴","🤤","😪","😵","🤐","🥴","🤢","🤮","🤧",
+    "😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","👻","💀",
+    "☠️","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀",
+    "😿","😾","👋","🤚","🖐️","✋","🖖","👌","🤏","✌️","🤞","🤟",
+    "🤘","🤙","👈","👉","👆","🖕","👇","☝️","👍","👎","✊","👊",
+    "🤛","🤜","👏","🙌","👐","🤲","🤝","🙏","✍️","💅","🤳","💪",
+    "🦾","🦵","🦿","🦶","👂","🦻","👃","🧠","🦷","🦴","👀","👁️",
+    "👅","👄","💋","🩸","❤️","🧡","💛","💚","💙","💜","🖤","🤍",
+    "🤎","💔","🔥","✨","🌟","💫","💥","💢","💦","💨","🕳️","💣",
 ];
 
 impl Component for App {
@@ -65,6 +87,7 @@ impl Component for App {
             messages: Vec::new(),
             input: String::new(),
             connected: false,
+            emoji_picker_open: false,
         }
     }
 
@@ -178,6 +201,7 @@ impl Component for App {
                     };
                     let _ = ws.send_with_str(&serde_json::to_string(&msg).unwrap());
                     self.input.clear();
+                    self.emoji_picker_open = false;
                 }
                 true
             }
@@ -190,14 +214,38 @@ impl Component for App {
                 self.messages.clear();
                 true
             }
+
+            Msg::ToggleEmojiPicker => {
+                self.emoji_picker_open = !self.emoji_picker_open;
+                true
+            }
+
+            Msg::AddEmoji(e) => {
+                self.input.push_str(&e);
+                true
+            }
+        }
+    }
+
+    fn rendered(&mut self, _ctx: &Context<Self>, _first_render: bool) {
+        let window = web_sys::window().unwrap();
+        if let Ok(lucide) = js_sys::Reflect::get(&window, &JsValue::from_str("lucide")) {
+            if !lucide.is_undefined() && !lucide.is_null() {
+                if let Ok(create_icons) = js_sys::Reflect::get(&lucide, &JsValue::from_str("createIcons")) {
+                    if create_icons.is_function() {
+                        let _ = js_sys::Reflect::apply(&create_icons.into(), &lucide, &js_sys::Array::new());
+                    }
+                }
+            }
         }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         match self.screen {
-            Screen::Login => self.view_login(ctx),
-            Screen::Chat  => self.view_chat(ctx),
-            Screen::About => self.view_about(ctx),
+            Screen::Login   => self.view_login(ctx),
+            Screen::Chat    => self.view_chat(ctx),
+            Screen::About   => self.view_about(ctx),
+            Screen::Gallery => self.view_gallery(ctx),
         }
     }
 }
@@ -220,22 +268,27 @@ impl App {
             <div id="login">
                 <div class="login-header">
                     <h1>{ "YEWCHAT" }</h1>
-                    <p>{ "// Rust + Yew + WebSocket" }</p>
+                    <p>{ "// REWIRING REALITY WITH RUST" }</p>
                     <div class="header-links">
                         <button class="link-btn" onclick={link.callback(|_| Msg::SwitchScreen(Screen::About))}>
-                            { "[ SYSTEM INTEL ]" }
+                            <i data-lucide="info"></i>
+                            { "SYSTEM INTEL" }
+                        </button>
+                        <button class="link-btn" onclick={link.callback(|_| Msg::SwitchScreen(Screen::Gallery))}>
+                            <i data-lucide="palette"></i>
+                            { "ART GALLERY" }
                         </button>
                     </div>
                 </div>
                 <div class="avatar-picker">
-                    <div class="avatar-label">{ "// SELECT AVATAR" }</div>
+                    <div class="avatar-label">{ "// SELECT YOUR AVATAR" }</div>
                     <div class="avatar-grid">{ avatars }</div>
                 </div>
                 <div class="login-form">
                     <div>
                         <div class="field-label">{ "// CALLSIGN" }</div>
                         <input class="neon-input" type="text"
-                            placeholder="e.g. Ade's Komputer"
+                            placeholder="e.g. Cyber_Nomad"
                             value={self.name.clone()}
                             oninput={link.callback(|e: InputEvent| {
                                 Msg::SetName(e.target_unchecked_into::<web_sys::HtmlInputElement>().value())
@@ -247,7 +300,7 @@ impl App {
                         />
                     </div>
                     <div>
-                        <div class="field-label">{ "// SERVER URL" }</div>
+                        <div class="field-label">{ "// UPLINK URL" }</div>
                         <input class="neon-input" type="text"
                             value={self.server_url.clone()}
                             oninput={link.callback(|e: InputEvent| {
@@ -257,12 +310,13 @@ impl App {
                     </div>
                     if self.login_error {
                         <span class="login-error">
-                            { "⚠ CONNECTION REFUSED — IS SERVER RUNNING?" }
+                            { "⚠ UPLINK FAILURE — VERIFY SERVER STATUS" }
                         </span>
                     }
                     <button class="btn-connect"
                         onclick={link.callback(|_| Msg::Connect)}>
-                        { "// CONNECT" }
+                        <i data-lucide="zap"></i>
+                        { "INITIATE CONNECTION" }
                     </button>
                 </div>
             </div>
@@ -275,35 +329,83 @@ impl App {
             <div id="about-screen">
                 <div class="about-container">
                     <div class="about-header">
-                        <h2>{ "SYSTEM INTEL" }</h2>
+                        <h2><i data-lucide="database"></i>{ "SYSTEM INTEL" }</h2>
                         <div class="glitch-line"></div>
                     </div>
                     <div class="about-content">
                         <section>
-                            <h3>{ "> PROJECT_OVERVIEW" }</h3>
-                            <p>{ "YewChat is a distributed communication protocol built on the bedrock of Rust. It leverages the Yew framework for high-performance frontend rendering and WebSockets for real-time synchronization." }</p>
+                            <h3>{ "> PROJECT_CORE" }</h3>
+                            <p>{ "YewChat is a decentralized communication terminal designed for the next era of the web. Built with Rust and compiled to WebAssembly, it ensures safety, speed, and creative freedom." }</p>
                         </section>
                         <section>
-                            <h3>{ "> ARCHITECTURE_CORE" }</h3>
+                            <h3>{ "> TECHNICAL_STACK" }</h3>
                             <ul class="tech-list">
-                                <li><span>{ "CORE_ENGINE:" }</span>{ " Rust 2021" }</li>
-                                <li><span>{ "UI_FRAMEWORK:" }</span>{ " Yew (WebAssembly)" }</li>
-                                <li><span>{ "PROTOCOL:" }</span>{ " WebSockets (tokio-tungstenite)" }</li>
-                                <li><span>{ "AESTHETIC:" }</span>{ " Cyberpunk / Neon-Monochrome" }</li>
+                                <li><span>{ "ENGINE:" }</span>{ " Rust (The language of the future)" }</li>
+                                <li><span>{ "INTERFACE:" }</span>{ " Yew Framework (Blazing fast UI)" }</li>
+                                <li><span>{ "TRANSPORT:" }</span>{ " WebSockets (Real-time pulses)" }</li>
+                                <li><span>{ "COMPILED:" }</span>{ " WebAssembly (Near-native speed)" }</li>
                             </ul>
                         </section>
                         <section>
-                            <h3>{ "> CREATIVITY_PROTOCOL" }</h3>
-                            <p>{ "In a world driven by automation, creativity is the ultimate encryption. This interface is a testament to the fusion of logic and art." }</p>
+                            <h3>{ "> THE_VISION" }</h3>
+                            <p>{ "We believe that software should not only be functional but also a work of art. YewChat is our canvas, and Rust is our brush." }</p>
                             <div class="creativity-quote">
-                                { "“Creativity is the key to compete with AI in the future workforce.”" }
+                                { "“The only way to predict the future is to build it ourselves, one line of code at a time.”" }
                                 <br/>
-                                <span class="quote-source">{ "— WORLD ECONOMIC FORUM" }</span>
+                                <span class="quote-source">{ "— ANONYMOUS CODER" }</span>
                             </div>
                         </section>
                     </div>
                     <button class="btn-back" onclick={link.callback(|_| Msg::SwitchScreen(Screen::Login))}>
-                        { "<< RETURN TO UPLINK" }
+                        <i data-lucide="arrow-left"></i>
+                        { "RETURN TO UPLINK" }
+                    </button>
+                </div>
+            </div>
+        }
+    }
+
+    fn view_gallery(&self, ctx: &Context<Self>) -> Html {
+        let link = ctx.link();
+        let art_items = vec![
+            ("🎨", "Digital Dreams"), ("🚀", "Space Explorer"), ("🤖", "AI Synthesis"),
+            ("🌌", "Nebula Pulse"), ("🧬", "Genetic Code"), ("⚡", "High Voltage"),
+            ("💎", "Data Crystal"), ("🧿", "Omni Sight"), ("🌈", "Spectrum Shift"),
+            ("🛸", "Unidentified"), ("🐉", "Mythic Flow"), ("👾", "Glitch Spirit"),
+        ];
+
+        let gallery: Html = art_items.into_iter().map(|(icon, label)| {
+            html! {
+                <div class="art-item" data-label={label}>{ icon }</div>
+            }
+        }).collect();
+
+        html! {
+            <div id="gallery-screen">
+                <div class="gallery-container">
+                    <div class="gallery-header">
+                        <h2><i data-lucide="palette"></i>{ "CREATIVE REPOSITORY" }</h2>
+                        <div class="glitch-line"></div>
+                    </div>
+                    <div class="gallery-content">
+                        <section>
+                            <h3>{ "> IMAGINATION_LOGS" }</h3>
+                            <p>{ "Explore the visual artifacts generated by the YewChat creativity engine. Each icon represents a fragment of a larger digital consciousness." }</p>
+                        </section>
+                        <div class="art-grid">
+                            { gallery }
+                        </div>
+                        <section style="margin-top: 30px;">
+                            <div class="creativity-quote" style="border-left-color: var(--neon2); color: var(--neon2); background: rgba(0, 207, 255, 0.05);">
+                                { "“Logic will get you from A to B. Imagination will take you everywhere.”" }
+                                <br/>
+                                <span class="quote-source">{ "— ALBERT EINSTEIN" }</span>
+                            </div>
+                        </section>
+                    </div>
+                    <button class="btn-back" onclick={link.callback(|_| Msg::SwitchScreen(Screen::Login))}>
+                        <i data-lucide="arrow-left"></i>
+                        { "RETURN TO UPLINK" }
                     </button>
                 </div>
             </div>
@@ -313,7 +415,7 @@ impl App {
     fn view_chat(&self, ctx: &Context<Self>) -> Html {
         let link = ctx.link();
         let status_class = if self.connected { "status live" } else { "status" };
-        let status_text  = if self.connected { "● CONNECTED" } else { "○ OFFLINE" };
+        let status_text  = if self.connected { "● UPLINK LIVE" } else { "○ UPLINK DOWN" };
 
         let msgs: Html = self.messages.iter().map(|m| {
             let is_self = m.sender == self.name;
@@ -347,7 +449,7 @@ impl App {
                 <div class="chat-header">
                     <div class="brand">
                         <span class="brand-name">{ "YEWCHAT" }</span>
-                        <span class="brand-sub">{ "Rust · Yew · WebSocket" }</span>
+                        <span class="brand-sub">{ "TRANSMISSION SECURE // 256-BIT" }</span>
                     </div>
                     <span class={status_class}>{ status_text }</span>
                     <div class="header-right">
@@ -356,7 +458,8 @@ impl App {
                         </span>
                         <button class="btn-dc"
                             onclick={link.callback(|_| Msg::Disconnect)}>
-                            { "DISCONNECT" }
+                            <i data-lucide="log-out"></i>
+                            { "TERMINATE" }
                         </button>
                     </div>
                 </div>
@@ -364,15 +467,31 @@ impl App {
                 <div class="messages">{ msgs }</div>
 
                 <div class="input-area">
+                    <div class="emoji-area">
+                        <button class="btn-emoji" onclick={link.callback(|_| Msg::ToggleEmojiPicker)}>
+                            { "😀" }
+                        </button>
+                        if self.emoji_picker_open {
+                            <div class="emoji-picker">
+                                { for EMOJIS.iter().map(|&e| {
+                                    let ev = e.to_string();
+                                    html! {
+                                        <button class="emoji-opt" onclick={link.callback(move |_| Msg::AddEmoji(ev.clone()))}>
+                                            { e }
+                                        </button>
+                                    }
+                                }) }
+                            </div>
+                        }
+                    </div>
                     <span class="prompt">{ ">_" }</span>
                     <input class="msg-input" type="text"
-                        placeholder="transmit message..."
+                        placeholder="transmit neural pulse..."
                         value={self.input.clone()}
                         disabled={!self.connected}
                         oninput={link.callback(|e: InputEvent| {
                             Msg::SetInput(e.target_unchecked_into::<web_sys::HtmlInputElement>().value())
                         })}
-                        // PERBAIKAN: Menggunakan batch_callback agar tidak menghapus pesan saat mengetik
                         onkeydown={link.batch_callback(|e: KeyboardEvent| {
                             if e.key() == "Enter" { Some(Msg::SendMessage) }
                             else { None }
@@ -380,6 +499,7 @@ impl App {
                     />
                     <button class="btn-send" disabled={!self.connected}
                         onclick={link.callback(|_| Msg::SendMessage)}>
+                        <i data-lucide="send"></i>
                         { "SEND" }
                     </button>
                 </div>

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YewChat</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --bg: #020408; --panel: #040a10; --border: #0a2a1a;
@@ -16,9 +17,15 @@
         html, body { width:100%; height:100%; background:var(--bg); color:var(--text); font-family:'Rajdhani',sans-serif; overflow:hidden; }
         body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,157,0.015) 2px,rgba(0,255,157,0.015) 4px); pointer-events:none; z-index:9999; }
 
+        .lucide { width: 18px; height: 18px; vertical-align: middle; margin-right: 6px; }
+
         #login { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; gap:28px; }
         .login-header { text-align:center; }
-        .login-header h1 { font-family:'Orbitron',monospace; font-size:2.4rem; font-weight:900; color:var(--neon); text-shadow:var(--glow); letter-spacing:8px; }
+        .login-header h1 { font-family:'Orbitron',monospace; font-size:3.2rem; font-weight:900; color:var(--neon); text-shadow:var(--glow); letter-spacing:12px; animation: flicker 3s infinite; }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: var(--glow); }
+            20%, 22%, 24%, 55% { opacity: 0.4; text-shadow: none; }
+        }
         .login-header p { font-family:'Share Tech Mono',monospace; color:var(--muted); font-size:0.7rem; letter-spacing:2px; }
         .avatar-picker { display:flex; flex-direction:column; align-items:center; gap:10px; }
         .avatar-label { font-family:'Share Tech Mono',monospace; font-size:0.62rem; color:var(--muted); letter-spacing:2px; }
@@ -30,7 +37,7 @@
         .neon-input { width:100%; padding:10px 14px; background:rgba(0,255,157,0.03); border:1px solid var(--border); border-radius:2px; color:var(--neon); font-family:'Share Tech Mono',monospace; font-size:0.88rem; outline:none; caret-color:var(--neon); transition:border-color 0.2s,box-shadow 0.2s; }
         .neon-input:focus { border-color:var(--neon); box-shadow:var(--glow); }
         .login-error { font-family:'Share Tech Mono',monospace; font-size:0.68rem; color:var(--neon3); text-align:center; }
-        .btn-connect { padding:12px; background:transparent; border:1px solid var(--neon); color:var(--neon); font-family:'Orbitron',monospace; font-size:0.75rem; font-weight:700; letter-spacing:4px; cursor:pointer; text-shadow:var(--glow); box-shadow:var(--glow); transition:background 0.2s; }
+        .btn-connect { padding:12px; background:transparent; border:1px solid var(--neon); color:var(--neon); font-family:'Orbitron',monospace; font-size:0.75rem; font-weight:700; letter-spacing:4px; cursor:pointer; text-shadow:var(--glow); box-shadow:var(--glow); transition:background 0.2s; display:flex; align-items:center; justify-content:center; }
         .btn-connect:hover { background:rgba(0,255,157,0.1); }
 
         .chat-screen { display:flex; flex-direction:column; height:100vh; width:min(860px,100vw); margin:0 auto; }
@@ -42,7 +49,7 @@
         .status.live { color:var(--neon); border-color:var(--neon); text-shadow:var(--glow); }
         .header-right { display:flex; align-items:center; gap:10px; }
         .user-pill { font-family:'Share Tech Mono',monospace; font-size:0.72rem; color:var(--neon); border:1px solid var(--neon); border-radius:2px; padding:4px 12px; box-shadow:var(--glow); }
-        .btn-dc { padding:5px 12px; background:transparent; border:1px solid var(--neon3); color:var(--neon3); font-family:'Orbitron',monospace; font-size:0.6rem; letter-spacing:2px; cursor:pointer; }
+        .btn-dc { padding:5px 12px; background:transparent; border:1px solid var(--neon3); color:var(--neon3); font-family:'Orbitron',monospace; font-size:0.6rem; letter-spacing:2px; cursor:pointer; display:flex; align-items:center; }
         .btn-dc:hover { background:rgba(255,45,120,0.1); }
 
         .messages { flex:1; overflow-y:auto; padding:16px 20px; display:flex; flex-direction:column; gap:8px; scroll-behavior:smooth; }
@@ -66,23 +73,33 @@
         .msg-input:focus { border-color:var(--neon); }
         .msg-input:disabled { opacity:0.3; }
         .msg-input::placeholder { color:var(--muted); }
-        .btn-send { padding:9px 18px; background:transparent; border:1px solid var(--neon); color:var(--neon); font-family:'Orbitron',monospace; font-size:0.65rem; font-weight:700; letter-spacing:3px; cursor:pointer; text-shadow:var(--glow); }
+        .btn-send { padding:9px 18px; background:transparent; border:1px solid var(--neon); color:var(--neon); font-family:'Orbitron',monospace; font-size:0.65rem; font-weight:700; letter-spacing:3px; cursor:pointer; text-shadow:var(--glow); display:flex; align-items:center; }
         .btn-send:hover { background:rgba(0,255,157,0.1); }
         .btn-send:disabled { opacity:0.25; cursor:not-allowed; }
 
-        /* About Screen Styles */
-        #about-screen { display:flex; align-items:center; justify-content:center; height:100vh; background:radial-gradient(circle at center, #0a1520 0%, #020408 100%); }
-        .about-container { width:min(600px, 90vw); padding:40px; background:rgba(4,10,16,0.8); border:1px solid var(--border); position:relative; overflow:hidden; }
-        .about-container::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation:scan 3s infinite linear; }
+        /* Emoji Picker Styles */
+        .emoji-area { position: relative; display: flex; align-items: center; }
+        .btn-emoji { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.6; transition: opacity 0.2s, transform 0.2s; padding: 5px; display: flex; align-items: center; }
+        .btn-emoji:hover { opacity: 1; transform: scale(1.1); }
+        .emoji-picker { position: absolute; bottom: 50px; left: 0; background: var(--panel); border: 1px solid var(--border); padding: 10px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; box-shadow: var(--glow); z-index: 100; max-height: 200px; overflow-y: auto; width: 240px; }
+        .emoji-opt { background: transparent; border: 1px solid transparent; font-size: 1.4rem; cursor: pointer; padding: 4px; border-radius: 4px; transition: all 0.1s; }
+        .emoji-opt:hover { background: rgba(0, 255, 157, 0.1); border-color: var(--neon); }
+        .emoji-picker::-webkit-scrollbar { width: 3px; }
+        .emoji-picker::-webkit-scrollbar-thumb { background: var(--border); }
+
+        /* About & Gallery Screen Styles */
+        #about-screen, #gallery-screen { display:flex; align-items:center; justify-content:center; height:100vh; background:radial-gradient(circle at center, #0a1520 0%, #020408 100%); overflow-y: auto; }
+        .about-container, .gallery-container { width:min(700px, 90vw); padding:40px; background:rgba(4,10,16,0.9); border:1px solid var(--border); position:relative; overflow:hidden; margin: 20px 0; }
+        .about-container::before, .gallery-container::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg, transparent, var(--neon), transparent); animation:scan 3s infinite linear; }
         @keyframes scan { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
 
-        .about-header h2 { font-family:'Orbitron',monospace; font-size:1.8rem; color:var(--neon); text-shadow:var(--glow); margin-bottom:10px; }
+        .about-header h2, .gallery-header h2 { font-family:'Orbitron',monospace; font-size:1.8rem; color:var(--neon); text-shadow:var(--glow); margin-bottom:10px; display:flex; align-items:center; }
         .glitch-line { height:1px; background:var(--muted); margin-bottom:30px; position:relative; }
         .glitch-line::after { content:''; position:absolute; top:0; left:0; width:30%; height:1px; background:var(--neon); box-shadow:var(--glow); }
 
-        .about-content section { margin-bottom:24px; }
-        .about-content h3 { font-family:'Share Tech Mono',monospace; font-size:0.9rem; color:var(--neon2); margin-bottom:8px; opacity:0.8; }
-        .about-content p { font-size:0.95rem; color:var(--text); line-height:1.6; opacity:0.9; }
+        .about-content section, .gallery-content section { margin-bottom:24px; }
+        .about-content h3, .gallery-content h3 { font-family:'Share Tech Mono',monospace; font-size:0.9rem; color:var(--neon2); margin-bottom:8px; opacity:0.8; }
+        .about-content p, .gallery-content p { font-size:0.95rem; color:var(--text); line-height:1.6; opacity:0.9; }
 
         .tech-list { list-style:none; margin-top:10px; }
         .tech-list li { font-family:'Share Tech Mono',monospace; font-size:0.85rem; margin-bottom:6px; display:flex; gap:10px; }
@@ -91,19 +108,25 @@
         .creativity-quote { margin-top:20px; padding:15px; border-left:2px solid var(--neon3); background:rgba(255,45,120,0.05); font-style:italic; color:var(--neon3); }
         .quote-source { font-size:0.7rem; font-family:'Share Tech Mono',monospace; opacity:0.7; font-style:normal; margin-top:5px; display:block; }
 
-        .btn-back { margin-top:20px; padding:10px 20px; background:transparent; border:1px solid var(--muted); color:var(--muted); font-family:'Share Tech Mono',monospace; font-size:0.8rem; cursor:pointer; transition:all 0.2s; }
+        .art-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:15px; margin-top:20px; }
+        .art-item { aspect-ratio: 1; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 2rem; background: rgba(0, 255, 157, 0.02); transition: all 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+        .art-item:hover { border-color: var(--neon2); background: rgba(0, 207, 255, 0.05); transform: scale(1.05); }
+        .art-item::after { content: attr(data-label); position: absolute; bottom: 0; left: 0; width: 100%; background: rgba(0,0,0,0.7); font-size: 0.6rem; text-align: center; padding: 2px 0; color: var(--neon2); transform: translateY(100%); transition: transform 0.2s; }
+        .art-item:hover::after { transform: translateY(0); }
+
+        .btn-back { margin-top:20px; padding:10px 20px; background:transparent; border:1px solid var(--muted); color:var(--muted); font-family:'Share Tech Mono',monospace; font-size:0.8rem; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; }
         .btn-back:hover { border-color:var(--neon); color:var(--neon); box-shadow:var(--glow); }
 
-        .header-links { margin-top:10px; }
-        .link-btn { background:transparent; border:none; color:var(--muted); font-family:'Share Tech Mono',monospace; font-size:0.7rem; cursor:pointer; letter-spacing:1px; }
+        .header-links { margin-top:15px; display: flex; gap: 20px; justify-content: center; }
+        .link-btn { background:transparent; border:none; color:var(--muted); font-family:'Share Tech Mono',monospace; font-size:0.75rem; cursor:pointer; letter-spacing:1px; display: flex; align-items: center; transition: color 0.2s; }
         .link-btn:hover { color:var(--neon2); text-decoration:underline; }
     </style>
-<link rel="modulepreload" href="/yewchat-client-3ec6dd4aed47da8b.js" crossorigin="anonymous" integrity="sha384-+vSyiqOpyY/qI0qeI6QXOGmZwPFuQABUn04maxvPYZL5BPFQI578hF0akiUlmEEF"><link rel="preload" href="/yewchat-client-3ec6dd4aed47da8b_bg.wasm" crossorigin="anonymous" integrity="sha384-GEgoxb+Y+RIzMo4UXXpjegSfCa+geJSjaNIoxgO2OmwFR1sEanvFKd7uNy37CKKQ" as="fetch" type="application/wasm"></head>
+<link rel="modulepreload" href="/yewchat-client-f1244185250e8d64.js" crossorigin="anonymous" integrity="sha384-6+KT0khg0jj1ddjJ1mrSin7/zkeGgvnZsbAmc3xDhA0tnzVbjEhVi6SfIzpuTcPF"><link rel="preload" href="/yewchat-client-f1244185250e8d64_bg.wasm" crossorigin="anonymous" integrity="sha384-A/MT8atqGP7zaMwXFHo2XmA273q0PktKbusg2Q8KWHiDGxcrjgSf6Ba7PGiQkXIZ" as="fetch" type="application/wasm"></head>
 <body>
 
 <script type="module">
-import init, * as bindings from '/yewchat-client-3ec6dd4aed47da8b.js';
-const wasm = await init({ module_or_path: '/yewchat-client-3ec6dd4aed47da8b_bg.wasm' });
+import init, * as bindings from '/yewchat-client-f1244185250e8d64.js';
+const wasm = await init({ module_or_path: '/yewchat-client-f1244185250e8d64_bg.wasm' });
 
 
 window.wasmBindings = bindings;

@@ -1,34 +1,23 @@
 ### Experiment 3.1: Original code
-
+![img_1.png](img_1.png)
 ![img.png](img.png)
+
+NOTE: Karena source code yang digunakan sudah tidak kompatible dengan versi rust sekarang, saya membuat sendiri code klien dan servernya.
 
 ### Experiment 3.2: Be Creative!
 
-For this experiment, I've enhanced the YewChat client with a **Cyberpunk "System Intel" Dashboard**. 
+![img_2.png](img_2.png)
 
-#### Creative Enhancements:
-- **New Page: [ SYSTEM INTEL ]**: Added a dedicated information page with a terminal-like aesthetic, providing technical specs and project philosophy.
-- **Enhanced Visuals**: 
-    - Implemented a **Scanline Effect** overlay across the entire application.
-    - Added a **Dynamic Laser Scan** animation on the About page.
-    - Expanded the **Avatar Matrix** with space-themed and elemental emojis.
-- **Interactive UI**:
-    - Cyber-styled buttons with glow effects and hover states.
-    - Integrated "Glitch" lines for section separation.
-- **Creative Narratives**: 
-    - Reframed technical details as "Architecture Core".
-    - Added a "Creativity Protocol" section inspired by the World Economic Forum's insights on the future workforce.
-    - Used hacker-style nomenclature (e.g., "Callsings", "Uplink", "Transmit").
+![img_3.png](img_3.png)
 
-#### Screenshots:
-1. **Login Matrix (New Avatars & Link)**
-   ![login_creative.png](login_creative.png)
-
-2. **System Intel Dashboard**
-   ![about_creative.png](about_creative.png)
-
-3. **Live Uplink (Chat Screen)**
-   ![chat_creative.png](chat_creative.png)
-
-#### Creative Philosophy:
-"In a world driven by automation, creativity is the ultimate encryption." This project attempts to bridge the gap between pure logic (Rust/WASM) and artistic expression, creating an immersive experience that feels like a piece of speculative fiction software.
+Untuk mewujudkan pembaruan kreatif dan penambahan fitur tersebut, saya melakukan modifikasi komprehensif yang berpusat pada dua berkas utama di sisi klien, yaitu index.html dan  
+src/lib.rs. Pada berkas index.html, saya menyisipkan skrip pustaka ikon Lucide via CDN dan merombak blok CSS secara signifikan dengan menambahkan animasi flicker neon pada judul
+utama, efek garis pemindai bergaya terminal retro, serta mendefinisikan tata letak (layout) khusus untuk halaman Gallery dan panel Emoji Picker agar dapat melayang (floating)    
+dengan efek pijaran (glow) yang konsisten. Sementara itu, pada berkas logika inti src/lib.rs, perubahannya jauh lebih mendalam; saya memperbarui enum Screen untuk mendaftarkan   
+rute halaman Galeri dan menambahkan enum pesan (Msg) baru seperti ToggleEmojiPicker dan AddEmoji untuk menangani interaksi. Di dalam struct App, saya menambahkan state
+emoji_picker_open guna mengontrol visibilitas panel, memperluas daftar konstanta AVATARS, serta menciptakan konstanta EMOJIS baru yang memuat ratusan karakter emoji. Saya        
+kemudian menyusun fungsi view_gallery dari awal untuk menampilkan koleksi ikon artistik, sekaligus memodifikasi fungsi view_login, view_about, dan view_chat untuk menanamkan     
+antarmuka ikon Lucide, mengubah gaya bahasa antarmuka menjadi tema cyberpunk (seperti "transmit neural pulse"), dan memasang tombol toggle emoji beserta struktur panelnya di area
+masukan pesan. Sebagai penyempurna, saya mengimplementasikan fungsi lifecycle rendered untuk mengeksekusi skrip JavaScript yang menggambar ikon Lucide ke dalam DOM secara        
+dinamis, serta memperbarui logika fungsi update agar setiap emoji yang dipilih langsung dirangkai ke dalam teks masukan dan panel emoji otomatis menutup seketika setelah pesan   
+berhasil ditransmisikan.
